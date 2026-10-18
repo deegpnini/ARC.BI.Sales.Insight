@@ -1,87 +1,105 @@
-# SalesInsight PY — Análise de Dados de Vendas
+# ARC.BI.Sales.Insight
 
-**Mini-projeto avaliativo — Módulo 1 — SCTEC/SENAI T4**
+**Pipeline de Business Intelligence e Machine Learning para vendas de e-commerce.**
 
----
-
-## Objetivo
-
-Simular o papel de um analista de dados júnior: limpar um CSV de vendas bagunçado e gerar um relatório para a diretoria, usando apenas a biblioteca padrão do Python.
-
----
-
-## O que o script faz
-
-- **RF01** — Criar ou carregar dataset de vendas (sintético ou Superstore)
-- **RF02** — Inspecionar dados (total, colunas, ausentes, primeiros registros)
-- **RF03** — Limpar dados com datetime e regex (datas, tipos, campos vazios)
-- **RF04** — Criar colunas derivadas (receita_total, mês, trimestre, ano, faixa)
-- **RF05** — Calcular métricas agregadas (mês, produto, categoria, região)
-- **RF06** — Segmentar clientes (Bronze, Prata, Ouro) com função lambda
-- **RF07** — Organizar código em funções reutilizáveis e ordem superior
-- **RF08** — Exportar resultados em CSV e JSON
-- **RF09** — Executar fluxo completo (main) com if __name__ == __main__
-
-## Datasets
-
-- **vendas.csv** — dataset sintético (gerado pelo próprio código)
-- Suporte adicional ao dataset real **Superstore** (Kaggle), usado para extrapolar a análise além do escopo mínimo
-
-Colunas esperadas: data, cliente, produto, categoria, quantidade, preco_unitario, regiao
-
-## Como rodar
-
-python salesinsight.py              # modo automático
-python salesinsight.py sintetico    # força dataset sintético
-python salesinsight.py real         # força dataset real (Superstore)
-
-**Requisitos:** apenas Python 3.x — sem dependências externas (sem Pandas/NumPy/Matplotlib), por exigência do escopo do Módulo 1.
-
-## Saídas geradas
-
-Após a execução, os seguintes arquivos são criados na pasta outputs/:
-
-**Relatórios (RF08):**
-- outputs/metricas_por_mes.csv
-- outputs/segmentacao_clientes.csv
-- outputs/estatisticas_gerais.json
-
-**Visualizações (Bônus B04):**
-- outputs/grafico_receita_mensal.svg
-- outputs/grafico_segmentacao.svg
-- outputs/grafico_barras_agrupadas.svg
-- outputs/dashboard.html
-
-## Bônus B04 — Gráficos SVG + Dashboard HTML
-
-Como Matplotlib e Seaborn são proibidos pelo escopo, os gráficos foram gerados em **SVG puro** com Python (apenas strings) e o dashboard em **HTML estático** (sem JavaScript).
-
-**Dashboard publicado:** https://deegpnini.github.io/salesinsight-py/
-
-## Estrutura do repositório
-
-| Branch | Propósito |
-|--------|-----------|
-| main | Versão estável/entregável |
-| develop | Integração de features |
-| feat/pipeline-dados | Desenvolvimento do pipeline de limpeza/análise |
-| docs/readme | Documentação |
-
-**Vídeo de demonstração (até 5 min):** https://youtu.be/nOI1rsR_if0?is=AWv913vM3qQWR6ky
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Pandas](https://img.shields.io/badge/Pandas-3.0-blue)
+![LightGBM](https://img.shields.io/badge/LightGBM-4.7-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.66-red)
 
 ---
 
-## Ferramentas de apoio e declaração de autoria
+## Sobre o projeto
 
-**IAs generativas usadas como apoio:** DeepSeek, Claude, ChatGPT, Gemini e Grok — para geração de código, revisão técnica e auditoria cruzada de resultados.
+ARC.BI.Sales.Insight é a evolução do mini-projeto SalesInsight PY (SCTEC/SENAI). Ele transforma um script de 400 registros em um **pipeline ETL completo** com dashboard interativo e validação rigorosa de Machine Learning.
 
-**Sou o autor intelectual do projeto.** As decisões de arquitetura (Python puro, estrutura do pipeline), as escolhas metodológicas e a lógica geral (RF01–RF09) foram definidas e validadas por mim. Estou em transição de carreira e uso IAs como ferramenta de produtividade — não sou especialista em cada linha de código, mas sou capaz de explicar e defender qualquer decisão tomada no projeto, em qualquer avaliação.
-
-Nenhuma solução externa foi copiada; o código foi gerado com apoio de IA e revisado/validado sob minha direção.
+**Este repositório preserva a versão original do curso** (script puro em Python) na tag v0.1-senai.
 
 ---
 
-**Helyton Renato Gonçalves Ronchi**
-SCTEC/SENAI — Turma T4
+## O resultado científico (honesto)
 
+O objetivo do projeto era testar se um modelo de Gradient Boosting (LightGBM) conseguiria superar baselines simples na previsão de vendas. Testamos em dados sintéticos e reais.
 
+### Em dados reais (Olist semanal, 83 semanas)
+
+Implementamos uma validação temporal rigorosa (TimeSeriesSplit, 5 dobras) comparando o LightGBM com um **Naive de 1 passo** (o baseline mais justo: prever que a próxima semana será igual à semana atual).
+
+| Modelo | MAPE Médio | WAPE Médio | Vitórias |
+|:---|:---:|:---:|:---:|
+| **LightGBM (alvo nivel)** | 26,46% | 27,00% | **0/5** |
+| **LightGBM (alvo razão)** | 25,07% | 24,94% | **0/5** |
+| **Naive1 (baseline justo)** | **16,91%** | **16,93%** | — |
+
+**Conclusão:** O LightGBM **não superou** o baseline determinístico simples em nenhuma configuração. O fator sazonal (baseline determinístico) também não se mostrou consistente (em 32 de 60 semanas de teste, ele caiu no fallback de fator 1.0).
+
+**Por que isso aconteceu?ʂ�
+- **Fome de dados:** O Olist tem apenas 83 semanas úteis. O LightGBM precisa de mais dados para encontrar padrões robustos, e acaba sofrendo overfitting.
+- **A força do passado recente:** Em sérias curtas de e-commerce, o valor da semana anterior é o preditor mais forte. O modelo de ML adicionou ruído em vez de sinal.
+
+**Isso é um resultado honesto e publicável.** O valor do projeto está na **arquitetura de validação** e na **maturidade de documentar o resultado negativo**, não em forçar o modelo a "ganhar".
+
+---
+
+## Como executar o projeto
+
+### 1. Ambiente
+```bash
+git clone https://github.com/deegpnini/ARC.BI.Sales.Insight.git
+cd ARC.BI.Sales.Insight
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Dados Sintéticos (EDA, Dashboard)
+```bash
+python3 src/data/generate_complex.py
+python3 src/data/clean_complex.py
+python3 src/visualization/explore.py
+streamlit run src/visualization/dashboard.py
+```
+
+### 3. Dados Reais (Olist)
+*Requer download do dataset no Kaggle.*
+```bash
+python3 src/data/process_olist.py
+python3 src/models/validate_v5c.py
+python3 src/models/validate_v6.py
+```
+
+---
+
+## Estrutura do projeto
+
+```
+ARC.BI.Sales.Insight/
+├── data/
+    ├── raw/             # Dados brutos (ignorados no Git)
+    └── processed/       # Dados limpos (ignorados no Git)
+├── outputs/             # Gráficos, métricas e resultados
+├── src/
+│   ✔── data/            # Scripts de ETL e geração
+ₔ   └── models/          # Validações de ML (v3 a v6)
+└── visualization/   # Streamlit e EDA
+├── requirements.txt
+└── README
+```
+
+---
+
+## Variantes testadas (transparência total)
+
+| Versão | Descrção | Dataset | Resultado Principal |
+|:---:|:---|:---|:---|
+| v1 | Features de calendário e nivel | Sintético | MAPE 9,99% |
+| v2 | Sem calendário | Sintético | Não superou o determinístico |
+| v3 | Alvo razão (y_t/lag_1) | Sintético | MAPE 10,64% |
+| v4/v5 | Primeiras rodadas no Olist | Olist | MAPE ~26% |
+| v5c | Validação com Naive1 e assert | olist | MAPE 26,46% |
+| **v6** | **Alvo razão no Olist** | **Olist** | **MAPE 25,07%** |
+
+Todas as variantes foram rodadas após ver os resultados anteriores.
+...
+
+**Autor:** Helyton Ronchi (@deegpnini)
