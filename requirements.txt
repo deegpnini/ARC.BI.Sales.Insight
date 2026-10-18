@@ -1,0 +1,13 @@
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+streamlit
+scikit-learn
+xgboost
+lightgbm
+statsmodels
+requests
+pydantic
+python-dotenv
