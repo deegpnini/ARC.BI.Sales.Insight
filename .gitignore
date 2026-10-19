@@ -31,3 +31,5 @@ Thumbs.db
 *secret*
 *.key
 *.pem
+data/raw/olist/
+data/processed/olist_semanal.csv
