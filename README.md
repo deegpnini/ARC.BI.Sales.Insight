@@ -120,7 +120,6 @@ python3 src/models/validate_v6.py
 
 A versão original do mini-projeto SCTEC/SENAI (script Python puro com a biblioteca padrão, 400 registros) está nos arquivos `salesinsight.py` e `vendas.csv` e na tag `v0.1-senai`.
 
-Vídeo de demonstração do curso: https://youtu.be/nOI1rsR_if0
 
 ---
 
