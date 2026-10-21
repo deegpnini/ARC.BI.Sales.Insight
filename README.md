@@ -8,6 +8,8 @@ Pipeline de Business Intelligence e Machine Learning para vendas de e-commerce, 
 >
 > **Sobre os dados:** EDA e dashboard usam dados **sintéticos** (scripts deste repositório). A validação principal de ML usa o dataset público **Olist** (dados reais).
 
+> **Origem:** este projeto começou como o mini-projeto avaliativo do curso SCTEC/SENAI (Módulo 1, Semana 08), entregue em Python puro (biblioteca padrão), preservado em [`salesinsight-py`](https://github.com/deegpnini/salesinsight-py). A evolução para o portfólio pessoal (Pandas, Streamlit, LightGBM e Olist) foi feita **depois** da entrega e **não** faz parte da avaliação acadêmica.
+
 ---
 
 ## Resultado principal
