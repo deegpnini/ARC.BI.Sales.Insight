@@ -102,9 +102,50 @@ A v5c = mesmo modelo da v5b + Naive1 + contagem de fallback do fator sazonal.
 
 Ambiente de referência: Python 3.14 (WSL2), pandas 3.0.6, numpy 2.5.4, lightgbm 4.7.0, streamlit 1.66.0.
 
+### 1. Instalar dependências
+
 ```bash
 git clone https://github.com/deegpnini/ARC.BI.Sales.Insight.git
 cd ARC.BI.Sales.Insight
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+### 2. Baixar os dados do Olist
+
+1. Baixe o dataset público [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) no Kaggle.
+2. Coloque os CSVs em `data/raw/`.
+3. Rode o ETL para gerar `data/processed/`:
+
+```bash
+python src/data/process_olist.py
+```
+
+### 3. Reproduzir a validação temporal (resultado principal)
+
+O resultado documentado no topo deste README (LightGBM perdeu para Naive1 em 5/5 dobras) é gerado por:
+
+```bash
+python src/models/validate_v6.py
+```
+
+Saída esperada: `outputs/validate_v6_ratio_results.csv` com colunas `mape_model`, `mape_naive1`, `wape_model`, `wape_naive1`, `fold`. As 5 dobras com MAPE do modelo acima do Naive1 confirmam a derrota do ML.
+
+### 4. Rodar o dashboard (dados sintéticos)
+
+```bash
+streamlit run src/visualization/dashboard.py
+```
+
+O dashboard usa **dados sintéticos** (não Olist) — isso está avisado no próprio app.
+
+### 5. Explorar os gráficos (dados sintéticos)
+
+```bash
+python src/visualization/explore.py
+```
+
+Gera os 7 PNGs em `outputs/` (sazonalidade, top produtos, regiões, correlação, segmentação, evolução, forecast).
+
+
