@@ -172,7 +172,7 @@ def main():
         yaxis_title="Receita (R$)",
     )
     fig_line.update_traces(line_color="#a855f7")
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_line, width='stretch')
 
     # ----- Mix: região + categoria -----
     col_a, col_b = st.columns(2)
@@ -187,7 +187,7 @@ def main():
             hole=0.45,
         )
         fig_pie.update_layout(template="plotly_dark", height=380, margin=dict(t=50, b=20))
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, width='stretch')
 
     with col_b:
         por_cat = (
@@ -210,7 +210,7 @@ def main():
             yaxis_title="",
         )
         fig_bar.update_traces(marker_color="#8b5cf6")
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width='stretch')
 
     # ----- Rankings -----
     col_c, col_d = st.columns(2)
@@ -226,7 +226,7 @@ def main():
         top_prod["Receita"] = top_prod["receita_total"].map(fmt_brl)
         st.dataframe(
             top_prod[["produto", "Receita"]].rename(columns={"produto": "Produto"}),
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
         )
 
@@ -255,7 +255,7 @@ def main():
             top_cli[["cliente", "Gasto total", "Segmento"]].rename(
                 columns={"cliente": "Cliente"}
             ),
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
         )
 
