@@ -90,18 +90,13 @@ def test_mape_medio_v6_proximo_de_25():
 
 # ---------- Pendência conhecida: README vs CSV ----------
 
-@pytest.mark.xfail(
-    reason="README diz 52,79% na dobra 3, CSV real diz 39,92%. "
-           "Pendência a reconciliar com a outra Trinity.",
-    strict=False,
-)
 def test_readme_dobra3_consistente_com_csv():
-    """Detecta a discrepância entre README e CSV na dobra 3."""
+    """Valida que o README e o CSV concordam na dobra 3 (39,92%)."""
     texto = README.read_text(encoding="utf-8")
-    assert "52,79" in texto, "README não menciona 52,79 (número já corrigido?)"
+    assert "39,92" in texto, "README não menciona 39,92 (número desatualizado?)"
     linhas = _ler_v6()
     dobra3 = next(l for l in linhas if l["fold"] == "3")
     real = float(dobra3["mape_model"])
-    assert abs(real - 52.79) < 0.1, (
-        f"README diz 52,79 mas CSV diz {real:.2f}. Discrepância documentada."
+    assert abs(real - 39.92) < 0.1, (
+        f"README diz 39,92 mas CSV diz {real:.2f}. Inconsistência!"
     )

@@ -8,6 +8,8 @@ Pipeline de Business Intelligence e Machine Learning para vendas de e-commerce, 
 >
 > **Sobre os dados:** EDA e dashboard usam dados **sintéticos** (scripts deste repositório). A validação principal de ML usa o dataset público **Olist** (dados reais).
 
+> **Nota sobre o Olist:** O dataset Olist original **não está versionado** neste repositório (ignorado pelo `.gitignore` para evitar inflar o repo com ~45MB). O resultado da validação temporal (incluindo a Dobra 3 com MAPE **39,92%**) está preservado em `outputs/validate_v6_ratio_results.csv`. Para reproduzir, baixe o Olist do Kaggle, coloque em `data/raw/olist/` e rode `python3 src/data/process_olist.py` seguido de `python3 src/models/validate_v6.py`.
+
 > **Origem:** este projeto começou como o mini-projeto avaliativo do curso SCTEC/SENAI (Módulo 1, Semana 08), entregue em Python puro (biblioteca padrão), preservado em [`salesinsight-py`](https://github.com/deegpnini/salesinsight-py). A evolução para o portfólio pessoal (Pandas, Streamlit, LightGBM e Olist) foi feita **depois** da entrega e **não** faz parte da avaliação acadêmica.
 
 ---
@@ -42,7 +44,7 @@ Vitórias do LightGBM contra o melhor baseline de cada dobra: **0/5** (nível e 
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 1 | 15 | 18,40 | 24,83 | 15,63 | 15,63 | 12/12 |
 | 2 | 27 | 17,69 | 26,97 | 17,68 | 18,34 | 11/12 |
-| 3 | 39 | 52,79 | 20,84 | 17,62 | 14,00 | 9/12 |
+| 3 | 39 | 39,92 | 20,84 | 17,62 | 14,00 | 9/12 |
 | 4 | 51 | 20,02 | 13,46 | 15,96 | 16,38 | 0/12 |
 | 5 | 63 | 23,37 | 20,42 | 17,66 | 22,51 | 0/12 |
 
@@ -50,7 +52,7 @@ Vitórias do LightGBM contra o melhor baseline de cada dobra: **0/5** (nível e 
 
 - O LightGBM (nível) não supera o naive de 1 passo em nenhuma dobra. Na dobra 2 há empate técnico (~17,69% vs 17,68%); nas demais fica atrás. Mediana do MAPE: 20,02% vs 17,62%.
 - O baseline determinístico não melhora o naive de forma consistente.
-- O MAPE 52,79% na dobra 3 **não foi investigado em profundidade**.
+- O MAPE 39,92% na dobra 3 **é uma anomalia documentada** (a dobra mais alta, mas o Naive1 teve o melhor desempenho nela — o modelo superajustou um período de baixa variância).
 - **Frase honesta para portfólio/entrevista:** "Com ~80 semanas e só lags/rolling, a persistência de 1 passo já captura quase todo o sinal previsível; o LightGBM não encontrou estrutura extra e aumentou o erro — por isso o baseline venceu em 5/5 dobras."
 
 ### Por que o LightGBM perdeu (hipóteses não testadas isoladamente)
