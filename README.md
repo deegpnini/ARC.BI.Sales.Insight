@@ -140,6 +140,11 @@ streamlit run src/visualization/dashboard.py
 
 O dashboard usa **dados sintéticos** (não Olist) — isso está avisado no próprio app.
 
+![Dashboard ARC.BI Sales Insight](outputs/dashboard_screenshot.png)
+
+*Dashboard interativo com filtros de período, região e categoria. Screenshot gerado automaticamente via `src/visualization/capture_screenshot.py` (Playwright).*
+
+
 ### 5. Explorar os gráficos (dados sintéticos)
 
 ```bash
