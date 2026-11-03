@@ -1,0 +1,6 @@
+# Optional deps (not used in the critical path)
+pydantic==2.14.2
+python-dotenv==1.2.4
+requests==2.34.2
+statsmodels==0.15.0
+xgboost==3.4.1

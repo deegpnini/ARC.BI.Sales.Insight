@@ -33,3 +33,7 @@ Thumbs.db
 *.pem
 data/raw/olist/
 data/processed/olist_semanal.csv
+
+# Dados sinteticos grandes (gerados por src/data/generate*.py)
+data/raw/vendas*.csv
+data/processed/vendas*.csv
