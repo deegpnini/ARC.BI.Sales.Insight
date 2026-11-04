@@ -4,3 +4,4 @@ python-dotenv==1.2.4
 requests==2.34.2
 statsmodels==0.15.0
 xgboost==3.4.1
+openpyxl>=3.1

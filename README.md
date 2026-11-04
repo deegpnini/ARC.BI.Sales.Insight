@@ -6,13 +6,32 @@ Pipeline de Business Intelligence e Machine Learning para vendas de e-commerce, 
 >
 > A versão original do curso está **somente** na tag [`v0.1-senai`](https://github.com/deegpnini/ARC.BI.Sales.Insight/tree/v0.1-senai) (`git show v0.1-senai:README.md`).
 >
-> **Sobre os dados:** EDA e dashboard usam dados **sintéticos** (scripts deste repositório). A validação principal de ML usa o dataset público **Olist** (dados reais).
+> **Sobre os dados:** O dashboard e a EDA usam o **Online Retail II** (UCI, dados reais de e-commerce UK, 2009-2011, licença CC BY 4.0). A validação principal de ML usa o **Olist** (Kaggle, dados reais de e-commerce brasileiro). O dataset sintético (`generate.py`) continua disponível para testes, mas **não é o padrão do dashboard**.
 
 > **Nota sobre o Olist:** O dataset Olist original **não está versionado** neste repositório (ignorado pelo `.gitignore` para evitar inflar o repo com ~45MB). O resultado da validação temporal (incluindo a Dobra 3 com MAPE **39,92%**) está preservado em `outputs/validate_v6_ratio_results.csv`. Para reproduzir, baixe o Olist do Kaggle, coloque em `data/raw/olist/` e rode `python3 src/data/process_olist.py` seguido de `python3 src/models/validate_v6.py`.
 
 > **Origem:** este projeto começou como o mini-projeto avaliativo do curso SCTEC/SENAI (Módulo 1, Semana 08), entregue em Python puro (biblioteca padrão), preservado em [`salesinsight-py`](https://github.com/deegpnini/salesinsight-py). A evolução para o portfólio pessoal (Pandas, Streamlit, LightGBM e Olist) foi feita **depois** da entrega e **não** faz parte da avaliação acadêmica.
 
 ---
+
+
+### 🏷️ Taxonomia de Produtos (Categorização Derivada)
+
+O dataset Online Retail II **não traz taxonomia nativa** de categorias. Para permitir análise mercadológica, implementamos uma função de categorização em `src/data/process_online_retail.py` baseada em palavras-chave da coluna `Description`, com a seguinte ordem de prioridade:
+
+1. **Natal:** `CHRISTMAS`, `XMAS`, `ADVENT`, `SANTA`, `REINDEER`
+2. **Bolsas:** `BAG`, `TOTE`, `PURSE`, `BACKPACK`, `LUNCH BAG`, `SHOPPER`
+3. **Cozinha/Mesa:** `MUG`, `CUP`, `TEA`, `BOWL`, `PLATE`, `JUG`, `CAKESTAND`, `CUTLERY`, `KITCHEN`
+4. **Iluminação:** `LIGHT`, `LAMP`, `CANDLE`, `HOLDER`, `LANTERN`, `T-LIGHT`
+5. **Papelaria:** `CARD`, `PAPER`, `WRAP`, `NOTEBOOK`, `PEN`, `PENCIL`, `ENVELOPE`
+6. **Armazenamento:** `BOX`, `TIN`, `STORAGE`, `JAR`, `BASKET`, `CONTAINER`
+7. **Joias:** `JEWEL`, `NECKLACE`, `BRACELET`, `RING`, `EARRING`, `BROOCH`
+8. **Brinquedos:** `TOY`, `GAME`, `PLAY`, `DOLL`, `TEDDY`, `PUZZLE`
+9. **Decoração:** `HEART`, `HANGING`, `FRAME`, `SIGN`, `ORNAMENT`, `DOORSTOP`, `WALL ART`
+10. **Outros:** termos residuais.
+
+> **Honestidade Radical:** essa taxonomia é **derivada**, não oficial. Está documentada para que o leitor saiba exatamente como as categorias foram construídas.
+
 
 ## Resultado principal
 
