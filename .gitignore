@@ -37,3 +37,6 @@ data/processed/olist_semanal.csv
 # Dados sinteticos grandes (gerados por src/data/generate*.py)
 data/raw/vendas*.csv
 data/processed/vendas*.csv
+
+# Dataset bruto do Online Retail II (grande, baixado do UCI)
+data/raw/real/
